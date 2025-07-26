@@ -441,7 +441,8 @@ class QueenAnt(ThrowerAnt):
         """
         # BEGIN Problem 12
         super().reduce_health(amount)
-        ants_lose()
+        if self.health <= 0:
+            ants_lose()
         # END Problem 12
 
 
