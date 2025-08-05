@@ -16,6 +16,7 @@ class Frame:
         """An empty frame with parent frame PARENT (which may be None)."""
         self.bindings = {}
         self.parent = parent
+        
 
     def __repr__(self):
         if self.parent is None:
@@ -23,16 +24,21 @@ class Frame:
         s = sorted(['{0}: {1}'.format(k, v) for k, v in self.bindings.items()])
         return '<{{{0}}} -> {1}>'.format(', '.join(s), repr(self.parent))
 
+
     def define(self, symbol, value):
         """Define Scheme SYMBOL to have VALUE."""
         # BEGIN PROBLEM 1
-        "*** YOUR CODE HERE ***"
+        self.bindings[symbol] = value
         # END PROBLEM 1
+
 
     def lookup(self, symbol):
         """Return the value bound to SYMBOL. Errors if SYMBOL is not found."""
         # BEGIN PROBLEM 1
-        "*** YOUR CODE HERE ***"
+        if symbol in self.bindings:
+            return self.bindings[symbol]
+        if self.parent is not None:
+            return self.parent.lookup(symbol)
         # END PROBLEM 1
         raise SchemeError('unknown identifier: {0}'.format(symbol))
 
@@ -51,7 +57,12 @@ class Frame:
         if len(formals) != len(vals):
             raise SchemeError('Incorrect number of arguments to function call')
         # BEGIN PROBLEM 8
-        "*** YOUR CODE HERE ***"
+        child_frame = Frame(self)
+        while formals is not nil:
+            child_frame.define(formals.first, vals.first)
+            formals = formals.rest
+            vals = vals.rest
+        return child_frame
         # END PROBLEM 8
 
 ##############
